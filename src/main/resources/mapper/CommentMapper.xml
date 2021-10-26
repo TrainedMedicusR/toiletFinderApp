@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.toiletfinderapp.dao.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.example.toiletfinderapp.entity.Comment">
+    <id column="comment_id" jdbcType="INTEGER" property="commentId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime" />
+    <result column="toilet_id" jdbcType="INTEGER" property="toiletId" />
+    <result column="rating" jdbcType="INTEGER" property="rating" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    comment_id, content, submit_time, toilet_id, rating
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.toiletfinderapp.entity.Comment">
+    insert into Comment (comment_id, content, submit_time, 
+      toilet_id, rating)
+    values (#{commentId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{submitTime,jdbcType=TIMESTAMP}, 
+      #{toiletId,jdbcType=INTEGER}, #{rating,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.toiletfinderapp.entity.Comment">
+    insert into Comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="commentId != null">
+        comment_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="submitTime != null">
+        submit_time,
+      </if>
+      <if test="toiletId != null">
+        toilet_id,
+      </if>
+      <if test="rating != null">
+        rating,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="commentId != null">
+        #{commentId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="submitTime != null">
+        #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="toiletId != null">
+        #{toiletId,jdbcType=INTEGER},
+      </if>
+      <if test="rating != null">
+        #{rating,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.toiletfinderapp.entity.Comment">
+    update Comment
+    <set>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="submitTime != null">
+        submit_time = #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="toiletId != null">
+        toilet_id = #{toiletId,jdbcType=INTEGER},
+      </if>
+      <if test="rating != null">
+        rating = #{rating,jdbcType=INTEGER},
+      </if>
+    </set>
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.toiletfinderapp.entity.Comment">
+    update Comment
+    set content = #{content,jdbcType=VARCHAR},
+      submit_time = #{submitTime,jdbcType=TIMESTAMP},
+      toilet_id = #{toiletId,jdbcType=INTEGER},
+      rating = #{rating,jdbcType=INTEGER}
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+
+  <select id="getAllComment" resultMap="BaseResultMap">
+    select *
+    from Comment
+  </select>
+
+  <select id="getAllCommentByTid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
+    from Comment
+    where toilet_id=#{toiletId,jdbcType=INTEGER}
+  </select>
+
+</mapper>

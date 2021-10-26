@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.toiletfinderapp.dao.ToiletMapper">
+  <resultMap id="BaseResultMap" type="com.example.toiletfinderapp.entity.Toilet">
+    <id column="toilet_id" jdbcType="INTEGER" property="toiletId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="longitude" jdbcType="DOUBLE" property="longitude" />
+    <result column="latitude" jdbcType="DOUBLE" property="latitude" />
+    <result column="is_damage" jdbcType="BIT" property="isDamage" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    toilet_id, name, longitude, latitude, is_damage
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Toilet
+    where toilet_id = #{toiletId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Toilet
+    where toilet_id = #{toiletId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.toiletfinderapp.entity.Toilet">
+    insert into Toilet (toilet_id, name, longitude, 
+      latitude, is_damage)
+    values (#{toiletId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{longitude,jdbcType=REAL}, 
+      #{latitude,jdbcType=REAL}, #{isDamage,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.toiletfinderapp.entity.Toilet">
+    insert into Toilet
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="toiletId != null">
+        toilet_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="isDamage != null">
+        is_damage,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="toiletId != null">
+        #{toiletId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=REAL},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=REAL},
+      </if>
+      <if test="isDamage != null">
+        #{isDamage,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.toiletfinderapp.entity.Toilet">
+    update Toilet
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=REAL},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=REAL},
+      </if>
+      <if test="isDamage != null">
+        is_damage = #{isDamage,jdbcType=BIT},
+      </if>
+    </set>
+    where toilet_id = #{toiletId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.toiletfinderapp.entity.Toilet">
+    update Toilet
+    set name = #{name,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=REAL},
+      latitude = #{latitude,jdbcType=REAL},
+      is_damage = #{isDamage,jdbcType=BIT}
+    where toilet_id = #{toiletId,jdbcType=INTEGER}
+  </update>
+
+  <select id="getAllToilets" resultMap="BaseResultMap">
+    select *
+    from Toilet
+  </select>
+
+  <select id="getAllDamagedToilets" resultMap="BaseResultMap">
+    select *
+    from Toilet
+    where is_damage = 1
+  </select>
+</mapper>
